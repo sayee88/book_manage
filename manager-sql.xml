@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>Manager Service SQL</comment>
+
+
+	<!-- 회원 전체 조회 -->
+	<entry key="memberSellectAll">
+	SELECT MEMBER_NO, MEMBER_ID, MEMBER_NM, PHONE, ADDRESS 
+	FROM MEMBER
+	WHERE SECESSION_FL = 'N'
+	ORDER BY MEMBER_NO
+	</entry>
+
+
+	<!-- 도서 등록 -->
+	<entry key="insertBook">
+	INSERT INTO BOOK 
+	VALUES (SEQ_BOOK_NO.NEXTVAL, ?, ?, ? , SYSDATE, DEFAULT, DEFAULT, NULL)
+	</entry>
+
+
+	<!-- 도서 삭제 -->
+	<entry key="deleteBook">
+	DELETE FROM BOOK 
+	WHERE BOOK_NO = ?
+	</entry>
+
+
+	<!-- 도서 수정 -->
+	<entry key="updateBook">
+	UPDATE BOOK SET 
+	BOOK_NM = ? , BOOK_WRITER = ?, BOOK_GR = ?
+	WHERE BOOK_NO = ?
+	</entry>
+
+
+	<!-- 도서 전체 조회 -->
+	<entry key="bookSellectAll">
+	SELECT BOOK_NO, BOOK_NM, BOOK_WRITER, BOOK_GR, ENROLL_DATE, BOOK_RCOUNT
+	FROM BOOK
+	ORDER BY BOOK_NO
+	</entry>
+
+
+	<!-- 도서 검색 1 -->
+	<entry key="searchBook1">
+	SELECT BOOK_NO, BOOK_NM, BOOK_WRITER, BOOK_GR, ENROLL_DATE, BOOK_RCOUNT
+	FROM BOOK
+	</entry>
+
+	<!-- 도서 검색 2 -->
+	<entry key="searchBook2">
+	ORDER BY BOOK_NO
+	</entry>
+
+
+	<!-- 검색 조건 1(제목) -->
+	<entry key="condition1">
+	WHERE BOOK_NM LIKE '%' || ? || '%'
+	</entry>
+
+	<!-- 검색 조건 2(작가) -->
+	<entry key="condition2">
+	WHERE BOOK_WRITER LIKE '%' || ? || '%'
+	</entry>
+
+	<!-- 검색 조건 3(도서 번호) -->
+	<entry key="condition3">
+	WHERE BOOK_NO = ?
+	</entry>
+
+	<!-- 검색 조건 4(분류)-->
+	<entry key="condition4">
+	WHERE BOOK_GR LIKE '%' || ? || '%'
+	</entry>
+
+
+	<!-- 대여중인 도서/회원 -->
+	<entry key="rentBookMember">
+	SELECT R.BOOK_NO, B.BOOK_GR, B.BOOK_NM, R.MEMBER_NO, M.MEMBER_NM
+	FROM RESERVE R
+	JOIN MEMBER M ON (R.MEMBER_NO = M.MEMBER_NO)
+	JOIN BOOK B ON (R.BOOK_NO = B.BOOK_NO)
+	WHERE B.RENT_YN = 'Y'
+	ORDER BY R.BOOK_NO
+	</entry>
+
+
+
+
+
+
+</properties>

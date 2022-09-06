@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+	<properties>
+		
+
+		<comment>Member Service SQL</comment>
+	
+
+		<!-- 회원 가입 -->
+		<entry key="signUp">
+		INSERT INTO MEMBER
+		VALUES ( SEQ_MEMBER_NO.NEXTVAL, ?, ?, ?, ?, ?, DEFAULT)
+		</entry>
+
+		<!-- 로그인 -->
+		<entry key="login">
+		SELECT MEMBER_NO, MEMBER_ID, MEMBER_PW, MEMBER_NM, PHONE, ADDRESS, SECESSION_FL
+		FROM MEMBER
+		WHERE MEMBER_ID = ?
+		AND MEMBER_PW = ?
+		AND SECESSION_FL = 'N'
+			
+		</entry>
+
+
+		<!-- 내 정보 수정 -->
+		<entry key="updateMyInfo">
+		UPDATE MEMBER 
+		SET PHONE = ?, ADDRESS = ?
+		WHERE MEMBER_NO = ?
+		</entry>
+
+
+		<!-- 회원 비밀번호 변경 -->
+		<entry key="updatePw">
+		UPDATE MEMBER 
+		SET MEMBER_PW = ? 
+		WHERE MEMBER_NO = ?
+		AND MEMBER_PW = ?
+		
+		</entry>
+
+
+		<!-- 회원 탈퇴 -->
+		<entry key="secession">
+		UPDATE MEMBER 
+		SET SECESSION_FL = 'Y'
+		WHERE MEMBER_NO = ?
+		AND MEMBER_PW = ? 
+		</entry>
+
+
+		<!-- 도서 검색 1 -->
+		<entry key="searchBook1">
+		SELECT BOOK_NO, BOOK_NM, BOOK_WRITER, BOOK_GR
+		FROM BOOK
+		</entry>
+
+	
+		<!-- 도서 검색 2 -->
+		<entry key="searchBook2">
+		ORDER BY BOOK_NM
+		</entry>	
+
+		
+		<!-- 검색 조건 1 -->
+		<entry key="condition1">
+		WHERE BOOK_NM LIKE '%' || ? || '%'
+		</entry>
+
+
+		<!-- 검색 조건 2 -->
+		<entry key="condition2">
+		WHERE BOOK_WRITER LIKE '%' || ? || '%'
+		</entry>
+
+
+		<!-- 검색 조건 3 -->
+		<entry key="condition3">
+		WHERE BOOK_GR LIKE '%' || ? || '%'
+		</entry>
+
+
+		<!-- 도서 예약 -->
+		<entry key="insertRev">
+		INSERT INTO RESERVE 
+		VALUES (SEQ_REV_NO.NEXTVAL, ?, ?, DEFAULT, DEFAULT)
+		</entry>
+
+
+		<!-- 도서 반납 -->
+		<entry key="returnBook">
+		DELETE FROM RESERVE WHERE REV_NO = ? AND MEMBER_NO = ?
+		</entry>
+
+
+		<!-- 나의 대여기록 조회 -->
+		<entry key="myRentInfo">
+		SELECT R.REV_NO, B.BOOK_NO, B.BOOK_NM, B.BOOK_WRITER, B.BOOK_GR, R.RENT_DATE, R.RETURN_EXPECT
+		FROM RESERVE R
+		JOIN BOOK B ON (R.BOOK_NO = B.BOOK_NO)
+		WHERE R.MEMBER_NO = ?
+		</entry>
+
+
+		<!-- 인기 도서 -->
+		<entry key="bestSeller">
+		SELECT BOOK_NO, BOOK_NM, BOOK_WRITER, BOOK_GR, BOOK_RCOUNT,
+		ROW_NUMBER() OVER(ORDER BY BOOK_RCOUNT DESC)"순위"
+		FROM BOOK
+		</entry>
+
+
+
+
+
+
+	</properties>
